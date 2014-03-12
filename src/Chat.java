@@ -62,10 +62,10 @@ public class Chat implements ActionListener{
     
 	public static void main(String[]args)throws IOException, ClassNotFoundException {
 		SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new Chat();
-            }
-        });
+	            public void run() {
+	                new Chat();
+	            }
+	        });
 	}
 	
 	@Override

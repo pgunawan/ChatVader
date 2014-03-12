@@ -6,7 +6,7 @@ import java.util.*;
 public class Bot {
 	
     private static BufferedReader reader;
-    
+
 	static String Bot(String input) throws IOException{
         //Checks for which method to call first
 		if(input.startsWith("hey")||
@@ -33,6 +33,14 @@ public class Bot {
 			return When(input);
 		else if(input.contains("?"))
 			return Question(input);
+		else if(input.contains("!") &&
+				input.contains("/VB")||
+				input.contains("/VBD")||
+				input.contains("/VBG")||
+				input.contains("/VBN")||
+				input.contains("/VBP")||
+				input.contains("/VBZ"))
+			return POSTagger(input);
 		else if(input.contains("bye"))
 			return Bye();
 		else return generic(input);
@@ -81,7 +89,7 @@ public class Bot {
 			a="The dark side is in all of us.";
 		else a="The emplacement cannot be revealed to the weak links like yourself.";
 		
-		return a;
+		return a;	
 	}
 	
 	private static String How(String input) throws IOException{
@@ -103,7 +111,7 @@ public class Bot {
 			randString="Power is the only resource I need.";
 		else if(input.contains("power"))
 			randString="You need to channel your anger to reach greater power.";
-        
+
 		return randString;
 	}
 	
@@ -125,7 +133,7 @@ public class Bot {
 		else if(input.contains("depends"))
 			randString="Are you ready to join the darkside?";
 		
-		return randString;
+		return randString;	
 	}
 	
 	private static String Why(String input) throws IOException{
@@ -212,11 +220,28 @@ public class Bot {
 		else if(input.contains("you")&input.contains("heard"))
 			randString="It depends...";
 		
-        return randString;
+        return randString;    
+	}
+	
+	private static String POSTagger(String input) throws IOException{
+		reader = new BufferedReader(new FileReader("postaggerverb.txt"));
+		List<String> lines = new ArrayList<String>();
+		String line = reader.readLine();
+		while( line != null ){
+		    lines.add(line);
+		    line = reader.readLine();
+		}
+		//Choose a random one from the list
+		Random r = new Random();
+		String randString= lines.get(r.nextInt(lines.size()));
+		System.out.println(randString);
+		
+		return randString;
 	}
 	
 	private static String Bye(){
 		String end="Good day sir.";
 		return end;
-	}	
+	}
+	
 }
