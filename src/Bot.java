@@ -34,21 +34,18 @@ public class Bot {
 		else if(input.contains("?"))
 			return Question(input);
 		else if(input.contains("!") &&
-				input.contains("/VB")||
+				(input.contains("/VB")||
 				input.contains("/VBD")||
 				input.contains("/VBG")||
 				input.contains("/VBN")||
 				input.contains("/VBP")||
-				input.contains("/VBZ"))
+				input.contains("/VBZ")))
 			return POSTagger(input);
 		else if(input.contains("bye"))
 			return Bye();
-		else return generic(input);
-		
-		
+		else return generic(input);	
 	}
     
-	
 	private static String Hi(String input) throws IOException{
         //Randoms between 2 type of greetings, if the person a person ask a question
         //It calls the adequate method else returns a generic answer
@@ -149,7 +146,7 @@ public class Bot {
 		String randString=lines.get(r.nextInt(lines.size()));
 		System.out.println(randString);
 		
-		if(input.contains("cape"))
+		if(synonyms.syn(input, "cape") || input.contains("cape"))
 			randString="It looks cool.";
 		else if(input.contains("dark")||input.contains("evil"))
 			randString="I need to get my revenge.";
@@ -158,7 +155,8 @@ public class Bot {
 		
 		return randString;
 	}
-	
+
+
 	private static String When(String input){
 		String a="";
 		if(input.contains("born"))
