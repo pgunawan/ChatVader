@@ -1,9 +1,9 @@
 import java.io.*;
+
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
-
-import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class Chat implements ActionListener{
 	//Declare JFrame components
@@ -12,62 +12,61 @@ public class Chat implements ActionListener{
 	private JButton btn;
 	private JScrollPane scroll;
 	private JFrame frame;
-	
-    public Chat(){
-    	//Create JFrame
-    	frame = new JFrame("ChatVader");
-    	frame.setSize(700,500);
-    	frame.setLayout(new FlowLayout());
-    	
-    	//Set JFrame's default close operation to EXIT_ON_CLOSE
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	
-    	//Initialize JTextArea
-    	display = new JTextArea("Welcome to ChatVader (type 'Bye' to quit)");
-    	display = new JTextArea(25,57);
-    	//Set JTextArea so it cannot be edited
-    	display.setEditable(false);
-    	//Set JTA to wrap lines
-    	display.setLineWrap(true);
-    	
-    	//Create new JScrollPane based on the JTA
-    	scroll = new JScrollPane(display);
-    	
-    	//Initialize JTextField
-    	Jinput = new JTextField(50);
-    	Jinput.setText("");
-    	Jinput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                try {
+
+	public Chat(){
+		//Create JFrame
+		frame = new JFrame("ChatVader");
+		frame.setSize(700,500);
+		frame.setLayout(new FlowLayout());
+		//Set JFrame's default close operation to EXIT_ON_CLOSE
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//Initialize JTextArea
+		display = new JTextArea("Welcome to ChatVader (type 'Bye' to quit)");
+		display = new JTextArea(25,57);
+		//Set JTextArea so it cannot be edited
+		display.setEditable(false);
+		//Set JTA to wrap lines
+		display.setLineWrap(true);
+
+		//Create new JScrollPane based on the JTA
+		scroll = new JScrollPane(display);
+
+		//Initialize JTextField
+		Jinput = new JTextField(50);
+		Jinput.setText("");
+		Jinput.addKeyListener(new java.awt.event.KeyAdapter() {
+			public void keyPressed(java.awt.event.KeyEvent evt) {
+				try {
 					actionEnter(evt);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-            }
-        });
-    	
-    	//Initialize JButton
-    	btn = new JButton("Send");
-    	btn.addActionListener(this);
-    	
-    	//Add all components to JFrame's content pane
-    	frame.getContentPane().add(scroll);
-    	frame.getContentPane().add(Jinput);
-    	frame.getContentPane().add(btn);
-    	
-    	//Show the JFrame
-    	frame.setVisible(true);
-    }
-    
+			}
+		});
+
+		//Initialize JButton
+		btn = new JButton("Send");
+		btn.addActionListener(this);
+
+		//Add all components to JFrame's content pane
+		frame.getContentPane().add(scroll);
+		frame.getContentPane().add(Jinput);
+		frame.getContentPane().add(btn);
+
+		//Show the JFrame
+		frame.setVisible(true);
+	}
+
 	public static void main(String[]args)throws IOException, ClassNotFoundException {
 		SwingUtilities.invokeLater(new Runnable() {
-	            public void run() {
-	                new Chat();
-	            }
-	        });
+			public void run() {
+				new Chat();
+			}
+		});
 	}
-	
+
 	@Override
 	public void actionPerformed (ActionEvent ae) {
 		//If user clicks the send button
@@ -77,68 +76,44 @@ public class Chat implements ActionListener{
 			//Edit input to slash any special characters, leading/trailing spaces, etc.
 			input=input.trim();
 			input=input.toLowerCase();
-			MaxentTagger tagger = null;
+			String tagged;
 			try {
-				tagger = new MaxentTagger("taggers/left3words-wsj-0-18.tagger");
+				tagged = tagger.tag(input); //POS tagger
+				String output = Bot.Bot(tagged);
+				Jinput.setText("");
+				display.setText(display.getText() + "<User> " +input+ "\n");
+				try {
+					Thread.sleep(750);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				display.setText(display.getText() + "<Vader>" + output + "\n");
 			} catch (IOException e2) {
 				e2.printStackTrace();
-			} catch (ClassNotFoundException e2) {
-				e2.printStackTrace();
 			}
-			String tagged = tagger.tagString(input);
-			String output = null;
-			try {
-				output = Bot.Bot(tagged);
-			} catch (IOException e2) {
-				e2.printStackTrace();
-			}
-			Jinput.setText("");
-			
-			try {
-				Thread.sleep(750);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			display.setText(display.getText() + "<User> " +input+ "\n");
-			try {
-				Thread.sleep(750);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			display.setText(display.getText() + "<Vader> " +output+ "\n");
 		}
 	}
-	
+
 	public void actionEnter (KeyEvent ke) throws IOException {
 		//If user press enter
-		if(	ke.getKeyCode()==KeyEvent.VK_ENTER){
+		if(ke.getKeyCode()==KeyEvent.VK_ENTER){
 			//Set input to JTextField's value
 			String input = Jinput.getText();
 			//Edit input to slash any special characters, leading/trailing spaces, etc.
 			input=input.trim();
 			input=input.toLowerCase();
-			MaxentTagger tagger = null;
-			try {
-				tagger = new MaxentTagger("taggers/left3words-wsj-0-18.tagger");
-			} catch (IOException e2) {
-				e2.printStackTrace();
-			} catch (ClassNotFoundException e2) {
-				e2.printStackTrace();
-			}
-			String tagged = tagger.tagString(input);
+			String tagged = tagger.tag(input); //POS tagger
+			//String cape = synonyms.syn(input);
 			
 			String output = Bot.Bot(tagged);
 			Jinput.setText("");
-			
+
 			try {
 				Thread.sleep(750);
-			}
-			catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
+
 			display.setText(display.getText() + "<User> " +input+ "\n");
 			try {
 				Thread.sleep(750);
