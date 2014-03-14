@@ -3,9 +3,9 @@ import java.io.IOException;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class tagger{
-
+    
 	public static String tag(String input) throws IOException{
-
+        
 		MaxentTagger tagger = null;
 		try {
 			tagger = new MaxentTagger("taggers/left3words-wsj-0-18.tagger");

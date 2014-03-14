@@ -1,7 +1,5 @@
 import java.io.*;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -12,28 +10,28 @@ public class Chat implements ActionListener{
 	private JButton btn;
 	private JScrollPane scroll;
 	private JFrame frame;
-
+    
 	public Chat(){
 		//Create JFrame
 		frame = new JFrame("ChatVader");
-		frame.setSize(700,500);
+		frame.setSize(580,500);
 		frame.setLayout(new FlowLayout());
 		//Set JFrame's default close operation to EXIT_ON_CLOSE
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
 		//Initialize JTextArea
 		display = new JTextArea("Welcome to ChatVader (type 'Bye' to quit)");
-		display = new JTextArea(25,57);
+		display = new JTextArea(25,43);
 		//Set JTextArea so it cannot be edited
 		display.setEditable(false);
 		//Set JTA to wrap lines
 		display.setLineWrap(true);
-
+        
 		//Create new JScrollPane based on the JTA
 		scroll = new JScrollPane(display);
-
+        
 		//Initialize JTextField
-		Jinput = new JTextField(50);
+		Jinput = new JTextField(36);
 		Jinput.setText("");
 		Jinput.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -45,20 +43,20 @@ public class Chat implements ActionListener{
 				}
 			}
 		});
-
+        
 		//Initialize JButton
 		btn = new JButton("Send");
 		btn.addActionListener(this);
-
+        
 		//Add all components to JFrame's content pane
 		frame.getContentPane().add(scroll);
 		frame.getContentPane().add(Jinput);
 		frame.getContentPane().add(btn);
-
+        
 		//Show the JFrame
 		frame.setVisible(true);
 	}
-
+    
 	public static void main(String[]args)throws IOException, ClassNotFoundException {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -66,7 +64,7 @@ public class Chat implements ActionListener{
 			}
 		});
 	}
-
+    
 	@Override
 	public void actionPerformed (ActionEvent ae) {
 		//If user clicks the send button
@@ -93,7 +91,7 @@ public class Chat implements ActionListener{
 			}
 		}
 	}
-
+    
 	public void actionEnter (KeyEvent ke) throws IOException {
 		//If user press enter
 		if(ke.getKeyCode()==KeyEvent.VK_ENTER){
@@ -107,13 +105,13 @@ public class Chat implements ActionListener{
 			
 			String output = Bot.Bot(tagged);
 			Jinput.setText("");
-
+            
 			try {
 				Thread.sleep(750);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
+            
 			display.setText(display.getText() + "<User> " +input+ "\n");
 			try {
 				Thread.sleep(750);
