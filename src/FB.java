@@ -11,4 +11,11 @@ public class FB {
 		String about = me.getDescription();		
 		return about;
 	}
+	
+	public static String GLquote(String input){
+		FacebookClient fbClient = new DefaultFacebookClient();
+		Page me = fbClient.fetchObject("georgelucas.ds",com.restfb.types.Page.class);
+		String quote = me.getAbout();		
+		return quote;
+	}
 }

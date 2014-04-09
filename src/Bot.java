@@ -43,6 +43,9 @@ public class Bot {
 		else if (input.contains("about")||input.contains("coruscant")){
 			return FBabout(input);
 		}
+		else if (input.contains("george lucas")){
+			return GL(input);
+		}
 		else if (input.contains("joke")){
 			return Twitter(input);
 		}
@@ -334,6 +337,10 @@ public class Bot {
 	private static String FBabout(String input){
 		String about = FB.about(input);
 		return about;
+	}
+	private static String GL(String input){
+		String GLquote = FB.GLquote(input);
+		return "Wll, here is a quote from him: " + GLquote;
 	}
 
 	//Twitter API
